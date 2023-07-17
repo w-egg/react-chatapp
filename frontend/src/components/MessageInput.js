@@ -1,30 +1,31 @@
-import React, { useState } from 'react';
-import { Button, TextField, Box } from '@material-ui/core';
+import React, { useState, useContext } from 'react';
+import UserContext from '../UserContext';
 
-function MessageInput({ sendMessage }) {
-  const [inputMessage, setInputMessage] = useState('');
+function MessageInput({ ws }) {
+  const { user } = useContext(UserContext);
+  const [message, setMessage] = useState('');
 
-  const handleMessageChange = (event) => {
-    setInputMessage(event.target.value);
-  };
-
-  const handleMessageSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    sendMessage(inputMessage);
-    setInputMessage('');
+    const msg = {
+      username: user,
+      text: message,
+    };
+    ws.send(JSON.stringify(msg));
+    setMessage('');
   };
 
   return (
-    <Box component="form" onSubmit={handleMessageSubmit}>
-      <TextField
-        label="入力"
-        value={inputMessage}
-        onChange={handleMessageChange}
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="メッセージを入力..."
+        required
       />
-      <Button type="submit" variant="contained" color="primary">
-        送信
-      </Button>
-    </Box>
+      <button type="submit">送信</button>
+    </form>
   );
 }
 

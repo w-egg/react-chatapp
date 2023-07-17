@@ -1,6 +1,11 @@
+const http = require('http');
+const express = require('express');
 const WebSocket = require('ws');
 
-const wss = new WebSocket.Server({ port: 8080 });
+const app = express();
+const server = http.createServer(app);
+
+const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws) => {
   ws.on('message', (message) => {
@@ -12,3 +17,5 @@ wss.on('connection', (ws) => {
     });
   });
 });
+
+server.listen(5000, () => console.log('サーバの起動'));

@@ -1,15 +1,15 @@
 import React from 'react';
-import { List, ListItem, ListItemText } from '@material-ui/core';
 
 function MessageList({ messages }) {
   return (
-    <List>
-      {messages.map((message, i) => (
-        <ListItem key={i}>
-          <ListItemText primary={`${message.username}: ${message.text}`} />
-        </ListItem>
+    <ul>
+      {messages.map((message, index) => (
+        <li key={index}>
+          <strong>{message.username}: </strong>
+          {message.text}
+        </li>
       ))}
-    </List>
+    </ul>
   );
 }
 
